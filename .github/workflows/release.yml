@@ -11,9 +11,6 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      GREASYFORK_WEBHOOK_URL: ${{ secrets.GREASYFORK_WEBHOOK_URL }}
-      OPENUSERJS_WEBHOOK_URL: ${{ secrets.OPENUSERJS_WEBHOOK_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,21 +38,3 @@ jobs:
             dist/yt-watch-later-tools.user.js
             dist/SHA256SUMS.txt
           generate_release_notes: true
-
-      - name: Trigger Greasy Fork sync webhook
-        if: ${{ env.GREASYFORK_WEBHOOK_URL != '' }}
-        run: |
-          curl --fail --show-error --silent \
-            -X POST \
-            -H 'Content-Type: application/json' \
-            -d '{"source":"github-release","tag":"${{ github.ref_name }}"}' \
-            "$GREASYFORK_WEBHOOK_URL"
-
-      - name: Trigger OpenUserJS sync webhook
-        if: ${{ env.OPENUSERJS_WEBHOOK_URL != '' }}
-        run: |
-          curl --fail --show-error --silent \
-            -X POST \
-            -H 'Content-Type: application/json' \
-            -d '{"source":"github-release","tag":"${{ github.ref_name }}"}' \
-            "$OPENUSERJS_WEBHOOK_URL"

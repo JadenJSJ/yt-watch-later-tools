@@ -12,7 +12,6 @@
     "check:metadata": "bun scripts/verify-userscript.mjs",
     "verify": "bun run check:syntax && bun run check:metadata",
     "release:prepare": "bun scripts/prepare-release.mjs",
-    "release:build": "bun scripts/build-release.mjs",
-    "webhooks:test": "bun scripts/trigger-webhooks.mjs"
+    "release:build": "bun scripts/build-release.mjs"
   }
 }

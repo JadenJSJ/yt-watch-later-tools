@@ -33,10 +33,6 @@ Requirements:
 
 - [Bun](https://bun.sh/) `>= 1.1.0`
 
-Optional local env file:
-
-- `cp .env.example .env`
-
 <details>
 <summary>Commands, CI, and Release details</summary>
 
@@ -48,8 +44,6 @@ Optional local env file:
   - `bun run release:prepare -- 0.1.0`
 - Build release artifact:
   - `bun run release:build`
-- Locally smoke-test webhook endpoints (optional):
-  - `bun run webhooks:test`
 
 ## CI
 
@@ -59,7 +53,7 @@ Checks run on `push` to `main` and on `pull_request`:
 - JS syntax check (Bun parser)
 - Userscript metadata/structure validation (`scripts/verify-userscript.mjs`)
 
-## Release automation (GitHub + Greasy Fork + OpenUserJS)
+## Release automation (GitHub + Greasy Fork)
 
 GitHub Actions workflow: `.github/workflows/release.yml`
 
@@ -70,20 +64,17 @@ Pipeline steps:
 - Build `dist/yt-watch-later-tools.user.js`
 - Create SHA256 checksum
 - Publish GitHub Release with assets
-- Optionally trigger Greasy Fork and OpenUserJS sync webhooks
 
 ### Required setup for cross-publishing
 
-0. Push this repository to GitHub first. You need the GitHub repo before adding Actions secrets/webhook values.
-1. Configure your userscript on Greasy Fork and OpenUserJS to sync from this GitHub raw file:
+0. Push this repository to GitHub first.
+1. Configure your userscript on Greasy Fork (Admin tab) to sync from this GitHub raw file:
    - `https://raw.githubusercontent.com/jadenjsj/yt-watch-later-tools/main/yt-watch-later-tools.user.js`
-2. In GitHub repository secrets, add webhook URLs if you want immediate sync triggers:
-   - `GREASYFORK_WEBHOOK_URL`
-   - `OPENUSERJS_WEBHOOK_URL`
-3. (Optional) For a local webhook smoke test, set the same values in `.env` and run:
-   - `bun run webhooks:test`
-
-If webhook secrets are omitted, release still publishes to GitHub and external services can pull on their normal sync schedule.
+2. In GitHub repository settings, add a webhook:
+   - Payload URL: `https://greasyfork.org/en/users/870316-jadenjsj/webhook`
+   - Content type: `application/json`
+   - Event: `Just the push event` (or `Releases` if you sync from release assets)
+3. OpenUserJS monitors the repo directly, so no webhook setup is required there.
 
 ## Recommended release flow
 
