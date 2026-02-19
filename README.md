@@ -1,11 +1,15 @@
 # yt-watch-later-tools
 
+[![Install Userscript](https://img.shields.io/badge/Install-Userscript-2ea44f?style=for-the-badge&logo=tampermonkey&logoColor=white)](https://raw.githubusercontent.com/JadenJSJ/yt-watch-later-tools/main/yt-watch-later-tools.user.js)
+
 Userscript to help manage your YouTube **Watch Later** playlist.
 
 - Remove videos in reverse add order: **oldest added gets removed first**
 - Export your Watch Later list to JSON
 
 Userscript file: `yt-watch-later-tools.user.js`
+
+Quick install URL: `https://raw.githubusercontent.com/JadenJSJ/yt-watch-later-tools/main/yt-watch-later-tools.user.js`
 
 ## Preview
 
@@ -22,8 +26,8 @@ Userscript file: `yt-watch-later-tools.user.js`
 ## Install
 
 1. Install a userscript manager (for example: Tampermonkey, Violentmonkey, or Greasemonkey).
-2. Install from raw GitHub URL:
-   - `https://raw.githubusercontent.com/jadenjsj/yt-watch-later-tools/main/yt-watch-later-tools.user.js`
+2. Click the install button at the top, or install from raw GitHub URL:
+   - `https://raw.githubusercontent.com/JadenJSJ/yt-watch-later-tools/main/yt-watch-later-tools.user.js`
 3. Open your Watch Later page:
    - `https://www.youtube.com/playlist?list=WL`
 
@@ -69,7 +73,7 @@ Pipeline steps:
 
 0. Push this repository to GitHub first.
 1. Configure your userscript on Greasy Fork (Admin tab) to sync from this GitHub raw file:
-   - `https://raw.githubusercontent.com/jadenjsj/yt-watch-later-tools/main/yt-watch-later-tools.user.js`
+   - `https://raw.githubusercontent.com/JadenJSJ/yt-watch-later-tools/main/yt-watch-later-tools.user.js`
 2. In GitHub repository settings, add a webhook:
    - Payload URL: `https://greasyfork.org/en/users/870316-jadenjsj/webhook`
    - Content type: `application/json`
