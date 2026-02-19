@@ -11,6 +11,9 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      GREASYFORK_WEBHOOK_URL: ${{ secrets.GREASYFORK_WEBHOOK_URL }}
+      OPENUSERJS_WEBHOOK_URL: ${{ secrets.OPENUSERJS_WEBHOOK_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,9 +43,7 @@ jobs:
           generate_release_notes: true
 
       - name: Trigger Greasy Fork sync webhook
-        if: ${{ secrets.GREASYFORK_WEBHOOK_URL != '' }}
-        env:
-          GREASYFORK_WEBHOOK_URL: ${{ secrets.GREASYFORK_WEBHOOK_URL }}
+        if: ${{ env.GREASYFORK_WEBHOOK_URL != '' }}
         run: |
           curl --fail --show-error --silent \
             -X POST \
@@ -51,9 +52,7 @@ jobs:
             "$GREASYFORK_WEBHOOK_URL"
 
       - name: Trigger OpenUserJS sync webhook
-        if: ${{ secrets.OPENUSERJS_WEBHOOK_URL != '' }}
-        env:
-          OPENUSERJS_WEBHOOK_URL: ${{ secrets.OPENUSERJS_WEBHOOK_URL }}
+        if: ${{ env.OPENUSERJS_WEBHOOK_URL != '' }}
         run: |
           curl --fail --show-error --silent \
             -X POST \
