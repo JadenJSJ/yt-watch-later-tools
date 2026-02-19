@@ -1,0 +1,18 @@
+{
+  "name": "yt-watch-later-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Release automation and CI checks for the YouTube Watch Later Tools userscript.",
+  "type": "module",
+  "engines": {
+    "bun": ">=1.1.0"
+  },
+  "scripts": {
+    "check:syntax": "bun scripts/check-syntax.mjs",
+    "check:metadata": "bun scripts/verify-userscript.mjs",
+    "verify": "bun run check:syntax && bun run check:metadata",
+    "release:prepare": "bun scripts/prepare-release.mjs",
+    "release:build": "bun scripts/build-release.mjs",
+    "webhooks:test": "bun scripts/trigger-webhooks.mjs"
+  }
+}

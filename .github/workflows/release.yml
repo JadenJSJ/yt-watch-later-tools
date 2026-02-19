@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Verify userscript
+        run: bun run verify
+
+      - name: Build release artifact
+        run: bun run release:build
+
+      - name: Generate checksums
+        run: |
+          cd dist
+          sha256sum yt-watch-later-tools.user.js > SHA256SUMS.txt
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/yt-watch-later-tools.user.js
+            dist/SHA256SUMS.txt
+          generate_release_notes: true
+
+      - name: Trigger Greasy Fork sync webhook
+        if: ${{ secrets.GREASYFORK_WEBHOOK_URL != '' }}
+        env:
+          GREASYFORK_WEBHOOK_URL: ${{ secrets.GREASYFORK_WEBHOOK_URL }}
+        run: |
+          curl --fail --show-error --silent \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            -d '{"source":"github-release","tag":"${{ github.ref_name }}"}' \
+            "$GREASYFORK_WEBHOOK_URL"
+
+      - name: Trigger OpenUserJS sync webhook
+        if: ${{ secrets.OPENUSERJS_WEBHOOK_URL != '' }}
+        env:
+          OPENUSERJS_WEBHOOK_URL: ${{ secrets.OPENUSERJS_WEBHOOK_URL }}
+        run: |
+          curl --fail --show-error --silent \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            -d '{"source":"github-release","tag":"${{ github.ref_name }}"}' \
+            "$OPENUSERJS_WEBHOOK_URL"
